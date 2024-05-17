@@ -36,6 +36,9 @@ public class TaskController {
     @Operation(summary = "Busca um task a partir do seu identificador")
     public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") Long id){
         Optional<Task> taskO = taskService.findById(id);
+        if(taskO.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(taskO.get());
     }
 
@@ -43,6 +46,9 @@ public class TaskController {
     @Operation(summary = "Atualiza um task a partir do seu identificador")
     public ResponseEntity<Object> updateTask(@PathVariable(value = "id") Long id){
         Optional<Task> taskO = taskService.findById(id);
+        if(taskO.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(taskO.get());
     }
 
