@@ -3,11 +3,13 @@ package com.example.activity;
 
 
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Task {
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Id
     private Long id;
     private String title;

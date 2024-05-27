@@ -1,4 +1,4 @@
-package com.example.activity;
+package com.example.activity.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.activity.Task;
+import com.example.activity.services.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
 

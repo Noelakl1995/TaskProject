@@ -1,10 +1,13 @@
-package com.example.activity;
+package com.example.activity.services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.activity.Task;
+import com.example.activity.repositories.TaskRepository;
 
 @Service
 public class TaskService {
