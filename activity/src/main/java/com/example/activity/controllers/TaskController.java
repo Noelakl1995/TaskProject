@@ -35,7 +35,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(task));
     }
 
-    @GetMapping("/task{id}")
+    @GetMapping("/task/{id}")
     @Operation(summary = "Busca um task a partir do seu identificador")
     public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") Long id){
         Optional<Task> taskO = taskService.findById(id);
@@ -45,21 +45,31 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(taskO.get());
     }
 
-    @PutMapping("/task{id}")
+    @PutMapping("/task/{id}")
     @Operation(summary = "Atualiza um task a partir do seu identificador")
-    public ResponseEntity<Object> updateTask(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Object> updateTask(@PathVariable(value = "id") Long id, @RequestBody Task taskDetails){
         Optional<Task> taskO = taskService.findById(id);
         if(taskO.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
+        Task task = taskO.get();
+        task.setTitle(taskDetails.getTitle());
+        task.setDescription(taskDetails.getDescription());
+        task.setCompleted(taskDetails.getCompleted());
+
+        Task updatedTask = taskService.save(task);
         return ResponseEntity.status(HttpStatus.OK).body(taskO.get());
     }
 
-    @DeleteMapping("/task{id}")
+    @DeleteMapping("/task/{id}")
     @Operation(summary = "Deleta um task a apartir do seu identificador")
     public ResponseEntity<Object> deleteTask(@PathVariable(value = "id") Long id){
         Optional<Task> taskO = taskService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(taskO.get());
+        if(taskO.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+        }
+        taskService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
 }
