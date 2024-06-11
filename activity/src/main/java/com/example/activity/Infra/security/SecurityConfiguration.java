@@ -1,5 +1,7 @@
 package com.example.activity.Infra.security;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    
     @Autowired
     private SecurityFilter securityFilter;
 
@@ -29,6 +33,8 @@ public class SecurityConfiguration {
                .authorizeHttpRequests(authorize -> authorize
                .requestMatchers(HttpMethod.POST, "/task").hasRole("ADMIN")
                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+               .requestMatchers(HttpMethod.POST, "/auth/management").hasAnyRole(ADMIN.name())
+               .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                .anyRequest().authenticated())
                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
@@ -39,7 +45,7 @@ public class SecurityConfiguration {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
+    @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
